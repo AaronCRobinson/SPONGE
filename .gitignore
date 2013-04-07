@@ -33,3 +33,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Avoid databases for now
+.sqlite
+
+# Avoid backups
+~

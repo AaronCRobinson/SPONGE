@@ -1,3 +1,7 @@
 PyInstaller - look at using this to setup the onefile compiled product which will have database structure inside and baseline codebase.
 
 *NOTE: Need to be able to PyInstaller the PyInstaller or Custom package? When seperating database
+
+Moving forward without onefile solution plan of attack (consider py2exe). This means have a py script for interacting and building sqlite databases (SPONGEs).
+
+Need to look at packaging eggs and easy_install with database
