@@ -50,6 +50,33 @@ def importModules(pyCode, conn, compress=DB_COMPRESSED):
    except:
       raise #discover errors generated here
 
+def pyFunctionScraper(pyCode):
+   """ The purpose of this function is to scrape a file for the python functions. """
+   #NOTE: assume for now we are given file location
+   funcLst = []
+   with open(pyCode) as f:
+      #NOTE: We will assume all our pipeline code for now has global level defintions.
+      #NOTE: there should be a better way then just trying to read and interpret these? Like inspect?
+      for line in f: # check line for def
+         if line.startswith("def "):
+            funcDef = line[4:] # strip of "def "
+            funcName, args = funcDef.split('(')
+            args = args[:-1] # get rid of trailing ')'
+            if len(args) > 0:
+               args = args.split(',')
+               funcArgs = []
+               funcKwargs = [] # list of dictionarys (because position still somewhat matters)
+               # NOTE: how to detect type of an argument (standardize names?)?
+               while len(args) > 0:
+                  curArg = args.pop(0)
+                  if '=' in curArg: # then keyword argument
+                     key, default = curArg.split('=')
+                     funcKwargs.append({key:default})
+                  else:
+                     funcArgs.append(curArg)
+         funcLst.append({'name':funcName, 'args':funcArgs, 'kwargs':funcKwargs})
+   return funcLst
+
 def exporter(args):
    conn = connectDB(args.db) 
    exportModules(args.recordId, conn)
